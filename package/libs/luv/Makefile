@@ -4,70 +4,57 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+#
+# Copyright (C) 2015 OpenWrt.org
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=libuv
+PKG_NAME:=luv
 PKG_VERSION:=1.6.1
 PKG_RELEASE:=1
-
-PKG_LICENSE_FILES:=LICENSE
-
-PKG_MAINTAINER:=Luka Perkov <luka@openwrt.org>
+PKG_LICENSE:=Apache 2.0
 
 PKG_SOURCE:=$(PKG_NAME)-v$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://libuv.org/dist/v$(PKG_VERSION)/
-PKG_MD5SUM:=51cfa3d8adc05852982e3c742ec3c039
+PKG_SOURCE_URL:=https://github.com/luvit/luv/releases/download/v1.6.1/luv-v1.6.1.tar.gz
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-v$(PKG_VERSION)
+PKG_MD5SUM:=A17671DFB478E8B6A155115331D1873D
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-v$(PKG_VERSION)
-PKG_BUILD_PARALLEL:=1
-
-PKG_INSTALL:=1
-PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
 
-define Package/libuv
-  SECTION:=libs
-  CATEGORY:=Libraries
-  TITLE:=Cross-platform asychronous I/O library
-  URL:=https://github.com/libuv/libuv
-  DEPENDS:=+libpthread +librt
+define Package/luv
+  SUBMENU:=Lua
+  SECTION:=lang
+  CATEGORY:=Languages
+  TITLE:=luv
+  URL:=https://github.com/luvit/luv
+  DEPENDS:=+lua +libuv
 endef
 
-define Package/libuv/description
- libuv is a multi-platform support library with a focus on asynchronous I/O. It
- was primarily developed for use by Node.js, but it's also used by Luvit, Julia,
- pyuv, and others.
+define Package/luv/description
+	libuv bindings for luajit and lua 5.1/5.2.
 endef
 
 define Build/Configure
-	( cd $(PKG_BUILD_DIR); ./autogen.sh )
-	$(call Build/Configure/Default)
 endef
 
-define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/include/
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/include/* \
-		$(1)/usr/include/
+CMAKE_OPTIONS += \
+        -DWITH_SHARED_LIBUV=ON -DWITH_LUA_ENGINE=lua
 
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libuv.so* \
-		$(1)/usr/lib/
 
-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/libuv.pc \
-		$(1)/usr/lib/pkgconfig/
+define Package/luv/install
+        $(INSTALL_DIR) $(1)/usr/lib/lua
+        $(INSTALL_BIN) $(PKG_BUILD_DIR)/luv.so $(1)/usr/lib/lua/
+
+#        $(INSTALL_DIR) $(1)/usr/lib/lua/luv
+#        $(INSTALL_DATA) $(PKG_BUILD_DIR)/lua/luv/util.lua $(1)/usr/lib/lua/luv
 endef
 
-define Package/libuv/install
-	$(INSTALL_DIR) $(1)/usr/lib/
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libuv.so* \
-		$(1)/usr/lib/
-endef
 
-$(eval $(call BuildPackage,libuv))
+$(eval $(call BuildPackage,luv))
