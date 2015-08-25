@@ -29,9 +29,7 @@ include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
 define Package/luv
-  SUBMENU:=Lua
-  SECTION:=lang
-  CATEGORY:=Languages
+  CATEGORY:=easyon
   TITLE:=luv
   URL:=https://github.com/luvit/luv
   DEPENDS:=+lua +libuv
