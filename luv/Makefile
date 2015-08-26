@@ -19,9 +19,9 @@ PKG_RELEASE:=1
 PKG_LICENSE:=Apache 2.0
 
 PKG_SOURCE:=$(PKG_NAME)-v$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/luvit/luv/releases/download/v1.6.1/luv-v1.6.1.tar.gz
+PKG_SOURCE_URL:=https://github.com/luvit/luv/releases/download/v1.6.1/
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-v$(PKG_VERSION)
-PKG_MD5SUM:=A17671DFB478E8B6A155115331D1873D
+PKG_MD5SUM:=a17671dfb478e8b6a155115331d1873d
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-v$(PKG_VERSION)
 
@@ -39,20 +39,17 @@ define Package/luv/description
 	libuv bindings for luajit and lua 5.1/5.2.
 endef
 
-define Build/Configure
-endef
 
 CMAKE_OPTIONS += \
-        -DWITH_SHARED_LIBUV=ON -DWITH_LUA_ENGINE=lua
+	-DWITH_SHARED_LIBUV=ON -DWITH_LUA_ENGINE=Lua -DLUA_BUILD_TYPE=System
 
 
 define Package/luv/install
-        $(INSTALL_DIR) $(1)/usr/lib/lua
-        $(INSTALL_BIN) $(PKG_BUILD_DIR)/luv.so $(1)/usr/lib/lua/
+	$(INSTALL_DIR) $(1)/usr/lib/lua
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/luv.so $(1)/usr/lib/lua/
 
 #        $(INSTALL_DIR) $(1)/usr/lib/lua/luv
 #        $(INSTALL_DATA) $(PKG_BUILD_DIR)/lua/luv/util.lua $(1)/usr/lib/lua/luv
 endef
-
 
 $(eval $(call BuildPackage,luv))
