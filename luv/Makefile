@@ -32,7 +32,7 @@ define Package/luv
   CATEGORY:=easyon
   TITLE:=luv
   URL:=https://github.com/luvit/luv
-  DEPENDS:=+lua +libuv
+  DEPENDS:=+lua +libpthread +librt
 endef
 
 define Package/luv/description
@@ -41,7 +41,7 @@ endef
 
 
 CMAKE_OPTIONS += \
-	-DWITH_SHARED_LIBUV=ON -DWITH_LUA_ENGINE=Lua -DLUA_BUILD_TYPE=System
+	-DWITH_LUA_ENGINE=Lua -DLUA_BUILD_TYPE=System
 
 
 define Package/luv/install

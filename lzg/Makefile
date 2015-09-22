@@ -19,7 +19,7 @@ PKG_RELEASE:=1
 PKG_LICENSE:=MIT
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://W7CN2027533.apa.gad.schneider-electric.com/stage.git
+PKG_SOURCE_URL:=http://W7CN2027533.apa.gad.schneider-electric.com/gitblit/r/lzg.git
 PKG_SOURCE_VERSION:=master
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
